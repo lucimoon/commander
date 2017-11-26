@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 
 public class GoToLocation : Command, ICommand {
-  private bool isComplete = false;
   public Vector3 location;
 
   public GoToLocation () : base () {}

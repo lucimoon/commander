@@ -1,0 +1,7 @@
+- Impl. GoToRandomLocation as MacroCommand
+  - Be added as Unity Component (programmatically?)
+    - May have performance hit
+    - Can try adding all to object then enabling/disabling
+  - Execute coroutines
+  - See character walking to random locations
+

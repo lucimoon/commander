@@ -37,14 +37,16 @@ public class Commander: MonoBehaviour {
   }
 
   private void LoadCommands () {
+    // Basic Commands
     this.Wait = new Wait();
-
     this.GoToLocation = new GoToLocation(this);
-    this.commands.Add(this.GoToLocation);
 
+    // Macro Commands
+    this.GoToRandomLocation = gameObject.AddComponent<GoToRandomLocation>();
+    this.GoToRandomLocation.commander = this;
 
-    // this.GoToRandomLocation = new GoToRandomLocation(this);
-    // this.commands.Add(this.GoToRandomLocation);
+    // Add randomizable commands to list
+    this.commands.Add(this.GoToRandomLocation);
 
     // this.commands.Add(new Greet(this.controller));
     // this.commands.Add(new WalkForward(this.controller));
