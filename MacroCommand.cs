@@ -16,8 +16,7 @@ public class MacroCommand : MonoBehaviour, ICommand {
   }
 
   public IEnumerator Execute (Action callback) {
-    isComplete = false;
-    callback();
     yield return null;
+    callback();
   }
 }

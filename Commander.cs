@@ -9,6 +9,7 @@ public class Commander: MonoBehaviour {
 
   public GoToLocation GoToLocation;
   public GoToRandomLocation GoToRandomLocation;
+  public Wait Wait;
   public ICommand currentCommand;
 
   private bool idle = true;
@@ -30,13 +31,17 @@ public class Commander: MonoBehaviour {
       }
 
       this.currentCommand = activeCommands.Peek();
+      Debug.Log(currentCommand.GetType().Name);
       StartCoroutine(this.currentCommand.Execute(this.ExecutionCallback));
     }
   }
 
   private void LoadCommands () {
+    this.Wait = new Wait();
+
     this.GoToLocation = new GoToLocation(this);
     this.commands.Add(this.GoToLocation);
+
 
     // this.GoToRandomLocation = new GoToRandomLocation(this);
     // this.commands.Add(this.GoToRandomLocation);
@@ -47,6 +52,7 @@ public class Commander: MonoBehaviour {
 
   private void EnqueueCommand () {
     activeCommands.Enqueue(this.RandomCommand());
+    activeCommands.Enqueue(this.Wait);
   }
 
   public ICommand RandomCommand () {
@@ -61,5 +67,6 @@ public class Commander: MonoBehaviour {
   private void ExecutionCallback () {
     Debug.Log("Execution Callback");
     this.idle = true;
+    this.activeCommands.Dequeue();
   }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 
 public class GoToLocation : Command, ICommand {
+  private bool isComplete = false;
   public Vector3 location;
 
   public GoToLocation () : base () {}
@@ -12,11 +13,13 @@ public class GoToLocation : Command, ICommand {
   }
 
   public IEnumerator Execute (Action callback) {
+    this.isComplete = false;
+
     while(!this.isComplete) {
+      TryStopping();
       Debug.Log("walking");
       this.commander.controller.Face(this.location);
       this.commander.controller.WalkForward();
-      TryStopping();
       yield return null;
     }
 
@@ -24,8 +27,9 @@ public class GoToLocation : Command, ICommand {
   }
 
   private void TryStopping () {
+    Debug.Log("Trying to Stop");
     float distance = Vector3.Distance(this.location, this.commander.autonomy.senses.Location);
-    if (distance < 0.5f) {
+    if (distance < 1f) {
       this.isComplete = true;
     }
     Debug.Log("distance: " + distance);
