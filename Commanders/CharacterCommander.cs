@@ -1,24 +1,24 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Commander: MonoBehaviour {
-  public List<ICommand> commands;
+public class CharacterCommander : MonoBehaviour, ICommander {
   public Queue<ICommand> activeCommands;
   public ThirdPersonCtrl controller;
-  public Autonomy autonomy;
-
   public GoToLocation GoToLocation;
   public GoToRandomLocation GoToRandomLocation;
   public Wait Wait;
   public ICommand currentCommand;
 
+  private Senses senses;
   private bool idle = true;
+  private List<ICommand> commands;
 
   void Start () {
     this.controller = GetComponent<ThirdPersonCtrl>();
-    this.autonomy = GetComponent<Autonomy>();
-    this.commands = new List<ICommand>();
+    this.senses = new Senses(gameObject);
     this.activeCommands = new Queue<ICommand>();
+    this.commands = new List<ICommand>();
+
     this.LoadCommands();
   }
 
@@ -31,19 +31,17 @@ public class Commander: MonoBehaviour {
       }
 
       this.currentCommand = activeCommands.Peek();
-      Debug.Log(currentCommand.GetType().Name);
-      StartCoroutine(this.currentCommand.Execute(this.ExecutionCallback));
+      this.Execute(this.currentCommand, this.ExecutionCallback);
     }
   }
 
   private void LoadCommands () {
     // Basic Commands
     this.Wait = new Wait();
-    this.GoToLocation = new GoToLocation(this);
+    this.GoToLocation = new GoToLocation(this, controller, this.senses);
 
     // Macro Commands
-    this.GoToRandomLocation = gameObject.AddComponent<GoToRandomLocation>();
-    this.GoToRandomLocation.commander = this;
+    this.GoToRandomLocation = new GoToRandomLocation(this);
 
     // Add randomizable commands to list
     this.commands.Add(this.GoToRandomLocation);
@@ -53,6 +51,7 @@ public class Commander: MonoBehaviour {
   }
 
   private void EnqueueCommand () {
+    // commands.Update(senses);
     activeCommands.Enqueue(this.RandomCommand());
     activeCommands.Enqueue(this.Wait);
   }
@@ -66,9 +65,20 @@ public class Commander: MonoBehaviour {
     return (int)Mathf.Round(Random.value * (this.commands.Count - 1));
   }
 
+
   private void ExecutionCallback () {
-    Debug.Log("Execution Callback");
     this.idle = true;
     this.activeCommands.Dequeue();
+  }
+
+  public List<ICommand> Commands {
+    get {
+      return commands;
+    }
+  }
+
+  public void Execute (ICommand command, System.Action callback) {
+    Debug.Log(command.GetType().Name);
+    StartCoroutine(command.Execute(callback));
   }
 }

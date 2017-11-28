@@ -1,14 +1,13 @@
-using UnityEngine;
 using System;
 using System.Collections;
+using UnityEngine;
 
-public class GoToRandomLocation : MacroCommand, ICommand {
+public class GoToRandomLocation : CharacterMacroCommand, ICommand {
   private float maxDistance = 30f;
   private Vector3 location;
-  public Commander commander;
+  public Senses senses;
 
-  void Start () {
-  }
+  public GoToRandomLocation (CharacterCommander commander) : base(commander) {}
 
   public IEnumerator Execute (Action callback) {
     if (this.commander == null) {
@@ -20,7 +19,7 @@ public class GoToRandomLocation : MacroCommand, ICommand {
 
       // Set Location 
       this.commander.GoToLocation.location = location;
-      StartCoroutine(this.commander.GoToLocation.Execute(ExecutionCallback));
+      this.commander.Execute(commander.GoToLocation, ExecutionCallback);
 
       while(!this.isComplete) {
         yield return null;
@@ -31,10 +30,7 @@ public class GoToRandomLocation : MacroCommand, ICommand {
   }
 
   private Vector3 SelectRandomLocation () {
-    Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-1, 1), 0.0f, UnityEngine.Random.Range(-1, 1)) * maxDistance;
-    Debug.Log("randomLocation: " + randomLocation);
-
-    return randomLocation;
+    return new Vector3(UnityEngine.Random.Range(-1, 1), 0.0f, UnityEngine.Random.Range(-1, 1)) * maxDistance;
   }
 
   private void ExecutionCallback () {
@@ -42,7 +38,7 @@ public class GoToRandomLocation : MacroCommand, ICommand {
   }
 
   private void TryStopping () {
-    float distance = Vector3.Distance(this.location, this.commander.autonomy.senses.Location);
+    float distance = Vector3.Distance(this.location, this.senses.Location);
     if (distance < 0.5f) {
       this.isComplete = true;
     }

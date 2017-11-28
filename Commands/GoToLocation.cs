@@ -2,12 +2,16 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class GoToLocation : Command, ICommand {
+public class GoToLocation : CharacterCommand, ICommand {
   public Vector3 location;
 
   public GoToLocation () : base () {}
 
-  public GoToLocation (Commander commander) : base(commander) {
+  public GoToLocation (
+    CharacterCommander commander,
+    ThirdPersonCtrl controller,
+    Senses senses)
+    : base(commander, controller, senses) {
     this.location = new Vector3(10, 0, 0);
   }
 
@@ -16,7 +20,6 @@ public class GoToLocation : Command, ICommand {
 
     while(!this.isComplete) {
       TryStopping();
-      Debug.Log("walking");
       this.commander.controller.Face(this.location);
       this.commander.controller.WalkForward();
       yield return null;
@@ -26,11 +29,9 @@ public class GoToLocation : Command, ICommand {
   }
 
   private void TryStopping () {
-    Debug.Log("Trying to Stop");
-    float distance = Vector3.Distance(this.location, this.commander.autonomy.senses.Location);
+    float distance = Vector3.Distance(this.location, this.senses.Location);
     if (distance < 1f) {
       this.isComplete = true;
     }
-    Debug.Log("distance: " + distance);
   }
 }
