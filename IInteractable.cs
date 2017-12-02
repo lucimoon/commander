@@ -1,5 +1,9 @@
-using System;
+using System.Collections.Generic;
 
 public interface IInteractable {
-  Command InteractionCommand ();
+  List<ICommand> Interactions {
+    get;
+  }
+
+  ICommand RandomInteraction ();
 }

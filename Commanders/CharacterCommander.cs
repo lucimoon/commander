@@ -9,13 +9,13 @@ public class CharacterCommander : MonoBehaviour, ICommander {
   public Wait Wait;
   public ICommand currentCommand;
 
-  private Senses senses;
+  private Sensor sensor;
   private bool idle = true;
   private List<ICommand> commands;
 
   void Start () {
     this.controller = GetComponent<ThirdPersonCtrl>();
-    this.senses = new Senses(gameObject);
+    this.sensor = GetComponent<Sensor>();
     this.activeCommands = new Queue<ICommand>();
     this.commands = new List<ICommand>();
 
@@ -38,7 +38,7 @@ public class CharacterCommander : MonoBehaviour, ICommander {
   private void LoadCommands () {
     // Basic Commands
     this.Wait = new Wait();
-    this.GoToLocation = new GoToLocation(this, controller, this.senses);
+    this.GoToLocation = new GoToLocation(this, controller, this.sensor);
 
     // Macro Commands
     this.GoToRandomLocation = new GoToRandomLocation(this);
@@ -51,13 +51,14 @@ public class CharacterCommander : MonoBehaviour, ICommander {
   }
 
   private void EnqueueCommand () {
-    // commands.Update(senses);
+    // commands.Update(sensor);
     activeCommands.Enqueue(this.RandomCommand());
     activeCommands.Enqueue(this.Wait);
   }
 
   public ICommand RandomCommand () {
     int randomIndex = this.RandomCommandIndex();
+    // if (randomIndex > this.commands.Count - 1);
     return this.commands[randomIndex];
   }
 
@@ -65,8 +66,7 @@ public class CharacterCommander : MonoBehaviour, ICommander {
     return (int)Mathf.Round(Random.value * (this.commands.Count - 1));
   }
 
-
-  private void ExecutionCallback () {
+  private void ExecutionCallback () {`
     this.idle = true;
     this.activeCommands.Dequeue();
   }
@@ -78,7 +78,7 @@ public class CharacterCommander : MonoBehaviour, ICommander {
   }
 
   public void Execute (ICommand command, System.Action callback) {
-    Debug.Log(command.GetType().Name);
+    // Debug.Log(command.GetType().Name);
     StartCoroutine(command.Execute(callback));
   }
 }

@@ -10,8 +10,8 @@ public class GoToLocation : CharacterCommand, ICommand {
   public GoToLocation (
     CharacterCommander commander,
     ThirdPersonCtrl controller,
-    Senses senses)
-    : base(commander, controller, senses) {
+    Sensor sensor)
+    : base(commander, controller, sensor) {
     this.location = new Vector3(10, 0, 0);
   }
 
@@ -29,7 +29,7 @@ public class GoToLocation : CharacterCommand, ICommand {
   }
 
   private void TryStopping () {
-    float distance = Vector3.Distance(this.location, this.senses.Location);
+    float distance = Vector3.Distance(this.location, this.sensor.Location);
     if (distance < 1f) {
       this.isComplete = true;
     }

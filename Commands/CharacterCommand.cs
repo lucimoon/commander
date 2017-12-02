@@ -4,7 +4,7 @@ using System.Collections;
 public class CharacterCommand : Command {
   protected ThirdPersonCtrl controller;
   protected CharacterCommander commander;
-  protected Senses senses;
+  protected Sensor sensor;
 
   public CharacterCommand () : base () {}
 
@@ -28,9 +28,9 @@ public class CharacterCommand : Command {
   public CharacterCommand (
     CharacterCommander commander,
     ThirdPersonCtrl controller,
-    Senses senses) {
+    Sensor sensor) {
     this.controller = controller;
     this.commander = commander;
-    this.senses = senses;
+    this.sensor = sensor;
   }
 }

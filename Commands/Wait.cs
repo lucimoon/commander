@@ -4,8 +4,8 @@ using System.Collections;
 
 public class Wait : Command, ICommand {
   private float waitTime = 0f;
-  private float minTimeInclusive = 3f;
-  private float maxTimeInclusive = 4f;
+  private float minTimeInclusive = 0f;
+  private float maxTimeInclusive = 1f;
 
   public Wait () : base () {}
 
