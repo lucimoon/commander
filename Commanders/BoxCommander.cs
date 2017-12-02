@@ -1,19 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BoxCommander : MonoBehaviour, ICommander, IInteractable {
+public class BoxCommander : Commander, ICommander, IInteractable {
   private MultiList<ICommand> commands;
   private BoxController controller;
   private Interact interactCommand;
   private List<ICommand> interactionCommands;
 
-  public Command InteractionCommand () {
-    return interactCommand;
-  }
-
   void Start () {
     commands = new MultiList<ICommand>();
-    interactCommand = new Interact(this);
+    interactCommand = new Interact(this, interactionCommands);
   }
 
   public MultiList<ICommand> Commands {
@@ -22,18 +18,16 @@ public class BoxCommander : MonoBehaviour, ICommander, IInteractable {
     }
   }
 
-  public List<ICommand> Interactions {
+  public ICommand InteractionCommand {
     get {
-      return interactions;
+      return interactCommand;
     }
   }
 
-  public ICommand RandomInteraction () {
-    int randomIndex = this.RandomInteractionIndex();
-    return this.interactions[randomIndex];
+  public List<ICommand> Interactions {
+    get {
+      return interactionCommands;
+    }
   }
 
-  private int RandomInteractionIndex () {
-    return (int)Mathf.Round(Random.value * (this.interactions.Count - 1));
-  }
 }

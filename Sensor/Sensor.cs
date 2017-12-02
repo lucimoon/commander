@@ -11,17 +11,24 @@ public class Sensor : MonoBehaviour {
 
   void Start () {
     sensor = gameObject.AddComponent<SphereCollider>();
+    sensor.isTrigger = true;
     sensor.radius = maxSensorDistance;
 
-    sight = new Sight(gameObject);
+    sight = new Sight();
   }
 
   void OnTriggerStay(Collider otherCollider) {
-    sight.Sense(otherCollider.gameObject);
+    IInteractable interactableObject = otherCollider.gameObject.GetComponent<IInteractable>();
+    if (interactableObject != null) {
+      sight.Sense(interactableObject);
+    }
   }
 
   void OnTriggerExit(Collider otherCollider) {
-    sight.Unsense(otherCollider.gameObject);
+    IInteractable interactableObject = otherCollider.gameObject.GetComponent<IInteractable>();
+    if (interactableObject != null) {
+      sight.Unsense(interactableObject);
+    }
   }
 
   public Vector3 Location {
@@ -30,9 +37,10 @@ public class Sensor : MonoBehaviour {
     }
   }
 
-  public List<GameObject> VisibleObjects {
+  public List<ICommand> SensedCommands {
     get {
-      return sight.SensedObjects;
+      return sight.SensedCommands;
     }
   }
+
 }

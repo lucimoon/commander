@@ -2,40 +2,44 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Sight {
-  private List<GameObject> visibleObjects;
+  private List<ICommand> sensedCommands;
 
-  public Sight (GameObject gameObject) {
-    visibleObjects = new List<GameObject>();
+  public Sight () {
+    sensedCommands = new List<ICommand>();
   }
 
-  public List<GameObject> SensedObjects {
+  public List<ICommand> SensedCommands {
     get {
-      return visibleObjects;
+      return sensedCommands;
     }
   }
 
-  public void Sense (GameObject otherObject) {
-    bool visible = IsVisible(otherObject);
+  public void Sense (IInteractable interactableObject) {
+    bool visible = IsVisible(interactableObject);
 
-    // if within field of vision
+    if (sensedCommands.Contains(interactableObject.InteractionCommand)) {
+      if (!visible) {
+        Unsense(interactableObject);
+      }
+    }
+
     if (visible) {
-      // add to list of visible objects
-      Debug.Log("Visible: " + otherObject);
-      visibleObjects.Add(otherObject);
-    } else {
-      Unsense(otherObject);
+      if (!sensedCommands.Contains(interactableObject.InteractionCommand)) {
+        sensedCommands.Add(interactableObject.InteractionCommand);
+        Debug.Log("Visible: " + sensedCommands.Count);
+      }
     }
   }
 
-  private bool IsVisible (GameObject otherObject) {
+  private bool IsVisible (IInteractable interactableObject) {
     // test if the object is within field of vision
     return true;
   }
 
-  public void Unsense (GameObject otherObject) {
-    if (visibleObjects.Contains(otherObject)) {
-      Debug.Log("Invisible: " + otherObject);
-      visibleObjects.Remove(otherObject);
+  public void Unsense (IInteractable interactableObject) {
+    if (sensedCommands.Contains(interactableObject.InteractionCommand)) {
+      Debug.Log("Invisible: " + interactableObject);
+      sensedCommands.Remove(interactableObject.InteractionCommand);
     }
   }
 }

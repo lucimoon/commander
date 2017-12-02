@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class CharacterCommander : MonoBehaviour, ICommander {
+public class CharacterCommander : Commander, ICommander {
   public Queue<ICommand> activeCommands;
   public ThirdPersonCtrl controller;
   public GoToLocation GoToLocation;
@@ -14,6 +14,8 @@ public class CharacterCommander : MonoBehaviour, ICommander {
   private MultiList<ICommand> commands;
   private List<ICommand> characterCommands;
   private List<ICommand> interactionCommands;
+  private int characterCommandsIndex = 0;
+  private int interactionCommandsIndex = 1;
 
   void Start () {
     this.controller = GetComponent<ThirdPersonCtrl>();
@@ -40,8 +42,6 @@ public class CharacterCommander : MonoBehaviour, ICommander {
   }
 
   private void LoadCommands () {
-    int characterCommandsIndex = 0;
-    int interactionCommandsIndex = 1;
     commands.AddList(characterCommands);
     commands.AddList(interactionCommands);
 
@@ -62,7 +62,7 @@ public class CharacterCommander : MonoBehaviour, ICommander {
   private void EnqueueCommand () {
     // commands.Update(sensor);
     activeCommands.Enqueue(this.RandomCommand);
-    activeCommands.Enqueue(this.Wait);`
+    activeCommands.Enqueue(this.Wait);
   }
 
   public ICommand RandomCommand {
@@ -82,8 +82,8 @@ public class CharacterCommander : MonoBehaviour, ICommander {
     }
   }
 
-  public void Execute (ICommand command, System.Action callback) {
-    // Debug.Log(command.GetType().Name);
-    StartCoroutine(command.Execute(callback));
+  public void UpdateInteractions () {
+    interactionCommands.Clear();
+    interactionCommands.AddRange(sensor.SensedCommands);
   }
 }
