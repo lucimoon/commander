@@ -29,20 +29,17 @@ public class MultiList<T> {
   }
 
   public T RandomItem() {
-    int randomCount = (int)Mathf.Ceil(Random.value * this.Count);
-    int currentCount = 0;
-    int index = 0;
-    bool countWithinList = false;
+    int randomIndex = (Random.Range(0, this.Count));
+    bool indexWithinList = false;
     T randomItem = default(T);
 
     foreach (var list in this.lists) {
-      countWithinList = randomCount <= currentCount + list.Count;
+      indexWithinList = randomIndex < list.Count;
 
-      if (countWithinList) {
-        index = randomCount - currentCount - 1;
-        randomItem = list[index];
+      if (indexWithinList) {
+        return randomItem = list[randomIndex];
       } else {
-        currentCount += list.Count;
+        randomIndex -= list.Count;
       }
     }
 

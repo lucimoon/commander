@@ -5,8 +5,4 @@ public class BoxController : MonoBehaviour {
     Renderer renderer = GetComponent<Renderer>();
     renderer.material.SetColor("_Color", Color.red);
   }
-
-  void Start () {
-    ChangeColor();
-  }
 }

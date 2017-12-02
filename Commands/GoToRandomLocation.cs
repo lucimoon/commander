@@ -5,7 +5,6 @@ using UnityEngine;
 public class GoToRandomLocation : CharacterMacroCommand, ICommand {
   private float maxDistance = 30f;
   private Vector3 location;
-  public Sensor sensor;
 
   public GoToRandomLocation (CharacterCommander commander) : base(commander) {}
 
@@ -37,10 +36,4 @@ public class GoToRandomLocation : CharacterMacroCommand, ICommand {
     this.isComplete = true;
   }
 
-  private void TryStopping () {
-    float distance = Vector3.Distance(this.location, this.sensor.Location);
-    if (distance < 0.5f) {
-      this.isComplete = true;
-    }
-  }
 }

@@ -37,6 +37,7 @@ public class CharacterCommander : Commander, ICommander {
       }
 
       this.currentCommand = activeCommands.Peek();
+      Debug.Log("Executing: " + this.currentCommand);
       this.Execute(this.currentCommand, this.ExecutionCallback);
     }
   }
@@ -60,7 +61,7 @@ public class CharacterCommander : Commander, ICommander {
   }
 
   private void EnqueueCommand () {
-    // commands.Update(sensor);
+    this.UpdateInteractions();
     activeCommands.Enqueue(this.RandomCommand);
     activeCommands.Enqueue(this.Wait);
   }
