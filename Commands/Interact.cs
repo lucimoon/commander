@@ -24,8 +24,7 @@ public class Interact : Command, ICommand {
   }
 
   private ICommand RandomCommand () {
-    int randomIndex = UnityEngine.Random.Range(0, this.commander.Commands.Count - 1);
-    return this.commander.Commands[randomIndex];
+    return this.commander.Commands.RandomItem();
   }
 
   private void ExecutionCallback () {

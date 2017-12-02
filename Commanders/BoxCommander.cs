@@ -2,21 +2,21 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class BoxCommander : MonoBehaviour, ICommander, IInteractable {
-  private List<ICommand> commands;
+  private MultiList<ICommand> commands;
   private BoxController controller;
   private Interact interactCommand;
-  private List<ICommand> interactions;
+  private List<ICommand> interactionCommands;
 
   public Command InteractionCommand () {
     return interactCommand;
   }
 
   void Start () {
-    commands = new List<ICommand>();
+    commands = new MultiList<ICommand>();
     interactCommand = new Interact(this);
   }
 
-  public List<ICommand> Commands {
+  public MultiList<ICommand> Commands {
     get {
       return commands;
     }

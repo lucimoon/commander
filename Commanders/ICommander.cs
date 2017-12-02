@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public interface ICommander {
-  List<ICommand> Commands {
+  MultiList<ICommand> Commands {
     get;
   }
 }
