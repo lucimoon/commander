@@ -6,6 +6,7 @@ public class BoxCommander : Commander, ICommander, IInteractable {
   private BoxController controller;
   private Interact interactionCommand;
   private ChangeColor changeColor;
+  private ChangeSize changeSize;
   private List<ICommand> interactions;
 
   void Start () {
@@ -39,10 +40,13 @@ public class BoxCommander : Commander, ICommander, IInteractable {
 
     // Basic Commands
     this.changeColor = new ChangeColor(this.controller);
-    this.interactions.Add(this.changeColor);
+    this.changeSize = new ChangeSize(this.controller);
+
     // Macro Commands
 
     // Add randomizable commands to list
+    this.interactions.Add(this.changeColor);
+    this.interactions.Add(this.changeSize);
 
   }
 }
