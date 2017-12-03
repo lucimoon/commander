@@ -18,16 +18,13 @@ public class Sensor : MonoBehaviour {
   }
 
   void OnTriggerStay(Collider otherCollider) {
-    IInteractable interactableObject = otherCollider.gameObject.GetComponent<IInteractable>();
-    if (interactableObject != null) {
-      sight.Sense(interactableObject);
-    }
+    sight.Sense(otherCollider.gameObject);
   }
 
   void OnTriggerExit(Collider otherCollider) {
     IInteractable interactableObject = otherCollider.gameObject.GetComponent<IInteractable>();
     if (interactableObject != null) {
-      sight.Unsense(interactableObject);
+      sight.Unsense(interactableObject, otherCollider.gameObject);
     }
   }
 
@@ -43,4 +40,9 @@ public class Sensor : MonoBehaviour {
     }
   }
 
+  public List<GameObject> SensedObjects {
+    get {
+      return sight.SensedObjects;
+    }
+  }
 }

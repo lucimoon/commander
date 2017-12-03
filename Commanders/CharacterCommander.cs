@@ -6,6 +6,7 @@ public class CharacterCommander : Commander, ICommander {
   public ThirdPersonCtrl controller;
   public GoToLocation GoToLocation;
   public GoToRandomLocation GoToRandomLocation;
+  public Interaction Interaction;
   public Wait Wait;
   public ICommand currentCommand;
 
@@ -15,7 +16,6 @@ public class CharacterCommander : Commander, ICommander {
   private List<ICommand> characterCommands;
   private List<ICommand> interactionCommands;
   private int characterCommandsIndex = 0;
-  private int interactionCommandsIndex = 1;
 
   void Start () {
     this.controller = GetComponent<ThirdPersonCtrl>();
@@ -52,16 +52,17 @@ public class CharacterCommander : Commander, ICommander {
 
     // Macro Commands
     this.GoToRandomLocation = new GoToRandomLocation(this);
+    this.Interaction = new Interaction(this, this.sensor);
 
     // Add randomizable commands to list
     this.commands.Add(characterCommandsIndex, this.GoToRandomLocation);
+    this.commands.Add(characterCommandsIndex, this.Interaction);
 
     // this.commands.Add(new Greet(this.controller));
-    // this.commands.Add(new WalkForward(this.controller));
   }
 
   private void EnqueueCommand () {
-    this.UpdateInteractions();
+    // this.UpdateInteractions()
     activeCommands.Enqueue(this.RandomCommand);
     activeCommands.Enqueue(this.Wait);
   }

@@ -4,15 +4,28 @@ using System.Collections.Generic;
 public class BoxCommander : Commander, ICommander, IInteractable {
   private MultiList<ICommand> commands;
   private BoxController controller;
-  private Interact interactCommand;
-  private List<ICommand> interactionCommands;
+  private Interact interactionCommand;
   private ChangeColor changeColor;
+  private List<ICommand> interactions;
 
   void Start () {
     commands = new MultiList<ICommand>();
     controller = GetComponent<BoxController>();
-    interactionCommands = new List<ICommand>();
+    interactionCommand = new Interact();
+    interactions = new List<ICommand>();
     LoadCommands();
+  }
+
+  public List<ICommand> Interactions {
+    get {
+      return this.interactions;
+    }
+  }
+
+  public ICommand InteractionCommand {
+    get {
+      return this.interactionCommand;
+    }
   }
 
   public MultiList<ICommand> Commands {
@@ -21,25 +34,12 @@ public class BoxCommander : Commander, ICommander, IInteractable {
     }
   }
 
-  public ICommand InteractionCommand {
-    get {
-      return interactCommand;
-    }
-  }
-
-  public List<ICommand> Interactions {
-    get {
-      return interactionCommands;
-    }
-  }
-
   private void LoadCommands () {
-    this.interactCommand = new Interact(this, interactionCommands);
-    commands.AddList(this.interactionCommands);
+    commands.AddList(interactions);
 
     // Basic Commands
     this.changeColor = new ChangeColor(this.controller);
-    this.interactionCommands.Add(this.changeColor);
+    this.interactions.Add(this.changeColor);
     // Macro Commands
 
     // Add randomizable commands to list

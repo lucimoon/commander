@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 public class Sight {
   private List<ICommand> sensedCommands;
+  private List<GameObject> sensedObjects;
 
   public Sight () {
     sensedCommands = new List<ICommand>();
+    sensedObjects = new List<GameObject>();
   }
 
   public List<ICommand> SensedCommands {
@@ -14,18 +16,26 @@ public class Sight {
     }
   }
 
-  public void Sense (IInteractable interactableObject) {
+  public List<GameObject> SensedObjects {
+    get {
+      return sensedObjects;
+    }
+  }
+
+  public void Sense (GameObject otherObject) {
+    IInteractable interactableObject = otherObject.GetComponent<IInteractable>();
     bool visible = IsVisible(interactableObject);
 
     if (sensedCommands.Contains(interactableObject.InteractionCommand)) {
       if (!visible) {
-        Unsense(interactableObject);
+        Unsense(interactableObject, otherObject);
       }
     }
 
     if (visible) {
       if (!sensedCommands.Contains(interactableObject.InteractionCommand)) {
         sensedCommands.Add(interactableObject.InteractionCommand);
+        sensedObjects.Add(otherObject);
         Debug.Log("Visible: " + sensedCommands.Count);
       }
     }
@@ -36,10 +46,13 @@ public class Sight {
     return true;
   }
 
-  public void Unsense (IInteractable interactableObject) {
+  public void Unsense (IInteractable interactableObject, GameObject otherObject) {
     if (sensedCommands.Contains(interactableObject.InteractionCommand)) {
       Debug.Log("Invisible: " + interactableObject);
       sensedCommands.Remove(interactableObject.InteractionCommand);
+      sensedCommands.TrimExcess();
+      sensedObjects.Remove(otherObject);
+      sensedObjects.TrimExcess();
     }
   }
 }
