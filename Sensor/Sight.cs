@@ -24,6 +24,8 @@ public class Sight {
 
   public void Sense (GameObject otherObject) {
     IInteractable interactableObject = otherObject.GetComponent<IInteractable>();
+    if (interactableObject == null) return;
+
     bool visible = IsVisible(interactableObject);
 
     if (sensedCommands.Contains(interactableObject.InteractionCommand)) {
