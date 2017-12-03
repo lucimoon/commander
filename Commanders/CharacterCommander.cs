@@ -50,7 +50,7 @@ public class CharacterCommander : Commander, ICommander {
     this.GoToLocation = new GoToLocation(this, controller, this.sensor);
 
     // Macro Commands
-    this.GoToRandomLocation = new GoToRandomLocation(this);
+    this.GoToRandomLocation = new GoToRandomLocation(this, this.sensor);
     this.Interaction = new Interaction(this, this.sensor);
 
     // Add randomizable commands to list

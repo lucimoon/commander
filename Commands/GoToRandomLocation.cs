@@ -3,10 +3,13 @@ using System.Collections;
 using UnityEngine;
 
 public class GoToRandomLocation : CharacterMacroCommand, ICommand {
-  private float maxDistance = 30f;
+  private float maxDistance = 10f;
   private Vector3 location;
+  private Sensor sensor;
 
-  public GoToRandomLocation (CharacterCommander commander) : base(commander) {}
+  public GoToRandomLocation (CharacterCommander commander, Sensor sensor) : base(commander) {
+    this.sensor = sensor;
+  }
 
   public IEnumerator Execute (Action callback) {
     if (this.commander == null) {
@@ -29,7 +32,8 @@ public class GoToRandomLocation : CharacterMacroCommand, ICommand {
   }
 
   private Vector3 SelectRandomLocation () {
-    return new Vector3(UnityEngine.Random.Range(-1f, 1f), 0.0f, UnityEngine.Random.Range(-1f, 1f)) * maxDistance;
+    Vector3 randomDistance = new Vector3(UnityEngine.Random.Range(-maxDistance, maxDistance), 0.0f, UnityEngine.Random.Range(-maxDistance, maxDistance));
+    return this.sensor.Location + randomDistance;
   }
 
   private void ExecutionCallback () {
