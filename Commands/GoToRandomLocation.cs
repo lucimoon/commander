@@ -15,7 +15,7 @@ public class GoToRandomLocation : CharacterMacroCommand, ICommand {
     } else {
       this.isComplete = false;
       this.location = this.SelectRandomLocation();
-
+      Debug.Log(this.location);
       // Set Location 
       this.commander.GoToLocation.location = location;
       this.commander.Execute(commander.GoToLocation, ExecutionCallback);
@@ -29,7 +29,7 @@ public class GoToRandomLocation : CharacterMacroCommand, ICommand {
   }
 
   private Vector3 SelectRandomLocation () {
-    return new Vector3(UnityEngine.Random.Range(-1, 1), 0.0f, UnityEngine.Random.Range(-1, 1)) * maxDistance;
+    return new Vector3(UnityEngine.Random.Range(-1f, 1f), 0.0f, UnityEngine.Random.Range(-1f, 1f)) * maxDistance;
   }
 
   private void ExecutionCallback () {

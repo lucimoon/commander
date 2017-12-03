@@ -37,7 +37,6 @@ public class CharacterCommander : Commander, ICommander {
       }
 
       this.currentCommand = activeCommands.Peek();
-      Debug.Log("Executing: " + this.currentCommand);
       this.Execute(this.currentCommand, this.ExecutionCallback);
     }
   }
