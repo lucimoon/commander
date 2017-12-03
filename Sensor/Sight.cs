@@ -36,7 +36,6 @@ public class Sight {
       if (!sensedCommands.Contains(interactableObject.InteractionCommand)) {
         sensedCommands.Add(interactableObject.InteractionCommand);
         sensedObjects.Add(otherObject);
-        Debug.Log("Visible: " + sensedCommands.Count);
       }
     }
   }
@@ -48,7 +47,6 @@ public class Sight {
 
   public void Unsense (IInteractable interactableObject, GameObject otherObject) {
     if (sensedCommands.Contains(interactableObject.InteractionCommand)) {
-      Debug.Log("Invisible: " + interactableObject);
       sensedCommands.Remove(interactableObject.InteractionCommand);
       sensedCommands.TrimExcess();
       sensedObjects.Remove(otherObject);
