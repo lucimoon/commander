@@ -29,7 +29,8 @@ public class GoToLocation : CharacterCommand, ICommand {
   }
 
   private void TryStopping () {
-    float distance = Vector3.Distance(this.location, this.sensor.Location);
+    Vector3 targetXZ = new Vector3(this.location.x, this.sensor.Location.y, this.location.z);
+    float distance = Vector3.Distance(targetXZ, this.sensor.Location);
     if (distance < 1f) {
       this.isComplete = true;
     }
