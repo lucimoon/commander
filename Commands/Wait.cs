@@ -5,7 +5,7 @@ using System.Collections;
 public class Wait : Command, ICommand {
   private float waitTime = 0f;
   private float minTimeInclusive = 0f;
-  private float maxTimeInclusive = 1f;
+  private float maxTimeInclusive = 5f;
 
   public Wait () : base () {}
 
