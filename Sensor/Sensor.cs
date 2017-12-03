@@ -17,7 +17,7 @@ public class Sensor : MonoBehaviour {
     sight = new Sight();
   }
 
-  void OnTriggerStay(Collider otherCollider) {
+  void OnTriggerEnter(Collider otherCollider) {
     sight.Sense(otherCollider.gameObject);
   }
 
