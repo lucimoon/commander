@@ -19,6 +19,7 @@ public class GoToRandomLocation : CharacterMacroCommand, ICommand {
       this.isComplete = false;
       this.location = this.SelectRandomLocation();
       Debug.Log(this.location);
+
       // Set Location 
       this.commander.GoToLocation.location = location;
       this.commander.Execute(commander.GoToLocation, ExecutionCallback);
@@ -39,5 +40,4 @@ public class GoToRandomLocation : CharacterMacroCommand, ICommand {
   private void ExecutionCallback () {
     this.isComplete = true;
   }
-
 }
