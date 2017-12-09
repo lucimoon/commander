@@ -9,31 +9,53 @@ using System.Collections.Generic;
 public class Interaction : Command, ICommand {
   CharacterCommander commander;
   Sensor sensor;
+  Wait wait;
 
   public Interaction () : base () {}
 
   public Interaction (CharacterCommander commander, Sensor sensor) {
     this.commander = commander;
     this.sensor = sensor;
+    this.wait = new Wait();
   }
 
   public IEnumerator Execute (Action done) {
     isComplete = false;
 
     if (sensor.SensedObjects.Count > 0) {
-      int randomObjectIndex = UnityEngine.Random.Range(0, sensor.SensedObjects.Count);
-      GameObject otherObject = sensor.SensedObjects[randomObjectIndex];
+      GameObject otherObject;
+      int randomObjectIndex;
+
+      randomObjectIndex = UnityEngine.Random.Range(0, sensor.SensedObjects.Count);
+      otherObject = sensor.SensedObjects[randomObjectIndex];
+
+      wait.SetTime(2f);
+      this.commander.Execute(this.wait, this.ExecutionCallback);
+      while(!this.isComplete) {
+        this.commander.controller.LookAt(otherObject.transform.position);
+        yield return null;
+      }
+
+      isComplete = false;
       this.commander.GoToLocation.location = otherObject.transform.position;
       this.commander.Execute(commander.GoToLocation, ExecutionCallback);
-
       while(!isComplete) {
+        this.commander.controller.LookAt(otherObject.transform.position);
         yield return null;
       }
 
       isComplete = false;
       commander.Execute(RandomCommand(otherObject), ExecutionCallback);
-
       while(!isComplete) {
+        this.commander.controller.LookAt(otherObject.transform.position);
+        yield return null;
+      }
+
+      isComplete = false;
+      wait.SetTime(2f);
+      this.commander.Execute(this.wait, this.ExecutionCallback);
+      while(!this.isComplete) {
+        this.commander.controller.LookAhead();
         yield return null;
       }
     } else {

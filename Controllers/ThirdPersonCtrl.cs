@@ -96,6 +96,23 @@ public class ThirdPersonCtrl : MonoBehaviour {
     }
   }
 
+  private void LerpFace (Transform transform, Vector3 subject) {
+    LerpFace(transform, subject, false);
+  }
+
+  private void LerpFace (Transform transform, Vector3 subject, bool ignoreY) {
+    Vector3 directionToTarget;
+    Quaternion lookRotation;
+
+    directionToTarget = subject - transform.position;
+
+    if (ignoreY) directionToTarget.y = 0f;
+
+    lookRotation = Quaternion.LookRotation(directionToTarget);
+
+    transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, (Time.deltaTime * rotationSpeed));
+  }
+
   private void Jump () {
     if (state.IsJumping == false) {
       Debug.Log("Jump");
@@ -122,22 +139,16 @@ public class ThirdPersonCtrl : MonoBehaviour {
   }
 
   public void Face (Vector3 subject) {
-    Vector3 directionToTarget = subject - gameObject.transform.position;
-    directionToTarget.y = 0f;
-    Quaternion lookRotation = Quaternion.LookRotation(directionToTarget);
-
-    gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * (rotationSpeed / 360.0f));
-    // gameObject.transform.LookAt(subject);
+    LerpFace(gameObject.transform, subject, true);
   }
 
   public void LookAt (Vector3 subject) {
-    if (head != null) {
-      // Vector3 directionToTarget = subject - transform.position;
-      // directionToTarget.y = 0f;
-      // Quaternion lookRotation = Quaternion.LookRotation(directionToTarget);
+    if (head != null) LerpFace(head, subject);
+  }
 
-      // head.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * (rotationSpeed / 360.0f));
-      head.LookAt(subject);
+  public void LookAhead () {
+    if (head != null) {
+      head.transform.rotation = Quaternion.Lerp(head.transform.rotation, transform.rotation, (Time.deltaTime * rotationSpeed));
     }
   }
 }

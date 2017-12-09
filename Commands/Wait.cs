@@ -4,18 +4,21 @@ using System.Collections;
 
 public class Wait : Command, ICommand {
   private float waitTime = 0f;
-  private float minTimeInclusive = 0f;
-  private float maxTimeInclusive = 5f;
+  private float minTimeInclusive = 1f;
+  private float maxTimeInclusive = 2f;
 
   public Wait () : base () {}
 
   public IEnumerator Execute (Action callback) {
-    SetWaitTime();
     yield return new WaitForSeconds(waitTime);
     callback();
   }
 
-  private void SetWaitTime() {
+  public void SetRandomTime() {
     waitTime = UnityEngine.Random.Range(minTimeInclusive, maxTimeInclusive);
+  }
+
+  public void SetTime(float seconds) {
+    waitTime = seconds;
   }
 }

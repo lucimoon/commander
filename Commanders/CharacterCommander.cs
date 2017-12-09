@@ -8,6 +8,7 @@ public class CharacterCommander : Commander, ICommander {
   public GoToRandomLocation GoToRandomLocation;
   public Interaction Interaction;
   public Wait Wait;
+  public Stare Stare;
   public ICommand currentCommand;
 
   private Sensor sensor;
@@ -50,22 +51,27 @@ public class CharacterCommander : Commander, ICommander {
     this.GoToLocation = new GoToLocation(this, controller, this.sensor);
 
     // Macro Commands
+    this.Stare = new Stare(this, controller, this.sensor);
     this.GoToRandomLocation = new GoToRandomLocation(this, this.sensor);
     this.Interaction = new Interaction(this, this.sensor);
 
     // Add randomizable commands to list
     this.commands.Add(characterCommandsIndex, this.GoToRandomLocation);
     this.commands.Add(characterCommandsIndex, this.Interaction);
+    this.commands.Add(characterCommandsIndex, this.Stare);
 
     // this.commands.Add(new Greet(this.controller));
   }
 
   private void EnqueueCommand () {
-    // this.UpdateInteractions()
     activeCommands.Enqueue(this.RandomCommand);
-    activeCommands.Enqueue(this.Wait);
+    this.EnqueueWait();
   }
 
+  private void EnqueueWait () {
+    this.Wait.SetRandomTime();
+    activeCommands.Enqueue(this.Wait);
+  }
   public ICommand RandomCommand {
     get {
       return this.commands.RandomItem();

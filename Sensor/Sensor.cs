@@ -45,4 +45,25 @@ public class Sensor : MonoBehaviour {
       return sight.SensedObjects;
     }
   }
+
+  public Vector3 InterestingObjectLocation {
+    get {
+      if (this.SensedObjects.Count > 0) {
+        return this.SensedObjects[Random.Range(0, this.SensedObjects.Count)].transform.position;
+      }
+
+      return LeftOrRight();
+    }
+  }
+
+  private Vector3 LeftOrRight () {
+    List<Vector3> leftRight = new List<Vector3>(new Vector3[] {transform.right, -transform.right});
+    return leftRight[Random.Range(0, 2)] * 10;
+  }
+
+  public GameObject Self {
+    get {
+      return this.gameObject;
+    }
+  }
 }
