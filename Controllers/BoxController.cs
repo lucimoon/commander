@@ -1,17 +1,31 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(ItemSpawner))]
 public class BoxController : MonoBehaviour {
+  ItemSpawner spawner;
+
+  void Start() {
+    spawner = GetComponent<ItemSpawner>();
+  }
+
   public void ChangeColor () {
     Renderer renderer = GetComponent<Renderer>();
     renderer.material.SetColor("_Color", Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f, 1f, 1f));
   }
 
   public void ChangeSize () {
-    List<int> positiveOrNegativeOpts = new List<int>(new int[] {-1, 1});
-    int positiveOrNegative = positiveOrNegativeOpts[Random.Range(0,  positiveOrNegativeOpts.Count)];
-    float relativeChange = Random.value;
-    float totalChange = relativeChange * positiveOrNegative;
-    gameObject.transform.localScale += new Vector3(totalChange, totalChange, totalChange);
+    gameObject.transform.localScale *= Random.Range(0.5f, 2f);
+  }
+
+  public void ChangeSizeColor () {
+    this.ChangeSize();
+    this.ChangeColor();
+  }
+
+  public void Duplicate() {
+    if (spawner != null) {
+      spawner.SpawnSingle();
+    }
   }
 }

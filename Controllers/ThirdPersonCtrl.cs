@@ -35,6 +35,7 @@ public class ThirdPersonCtrl : MonoBehaviour {
     animator = GetComponent<DudeAnimations>();
     leftRotation = new Vector3(0f, -10f, 0f);
     rightRotation = new Vector3(0f, 10f, 0f);
+    ResetHead();
   }
 
   private void ConnectState() {
@@ -111,6 +112,10 @@ public class ThirdPersonCtrl : MonoBehaviour {
     lookRotation = Quaternion.LookRotation(directionToTarget);
 
     transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, (Time.deltaTime * rotationSpeed));
+  }
+
+  private void ResetHead() {
+    head.transform.rotation = transform.rotation;
   }
 
   private void Jump () {

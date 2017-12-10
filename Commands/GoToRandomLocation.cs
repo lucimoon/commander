@@ -18,7 +18,6 @@ public class GoToRandomLocation : CharacterMacroCommand, ICommand {
     } else {
       this.isComplete = false;
       this.location = this.SelectRandomLocation();
-      Debug.Log(this.location);
 
       // Set Location 
       this.commander.GoToLocation.location = location;
