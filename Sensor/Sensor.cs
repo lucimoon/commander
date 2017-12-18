@@ -15,6 +15,7 @@ public class Sensor : MonoBehaviour {
     sensor.radius = maxSensorDistance;
 
     sight = new Sight();
+    touch = new Touch();
   }
 
   void OnTriggerEnter(Collider otherCollider) {
@@ -36,6 +37,9 @@ public class Sensor : MonoBehaviour {
 
   public List<ICommand> SensedCommands {
     get {
+      // if (typeof(IPickupable) == obj) {
+
+      // }
       return sight.SensedCommands;
     }
   }

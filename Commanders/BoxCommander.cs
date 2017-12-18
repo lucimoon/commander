@@ -8,13 +8,14 @@ public class BoxCommander : Commander, ICommander, IInteractable {
   private ChangeColor changeColor;
   private ChangeSize changeSize;
   private ChangeSizeColor changeSizeColor;
+  private ComeToMe comeToMe;
   private Duplicate duplicate;
   private List<ICommand> interactions;
 
   void Start () {
     commands = new MultiList<ICommand>();
     controller = GetComponent<BoxController>();
-    interactionCommand = new Interact();
+    interactionCommand = new ComeToMe();
     interactions = new List<ICommand>();
     LoadCommands();
   }
@@ -25,10 +26,8 @@ public class BoxCommander : Commander, ICommander, IInteractable {
     }
   }
 
-  public ICommand InteractionCommand {
-    get {
-      return this.interactionCommand;
-    }
+  public ICommand InteractionCommand(ICommander interactingCommander) {
+    return new ComeToMe(interactingCommander);
   }
 
   public MultiList<ICommand> Commands {
@@ -36,6 +35,7 @@ public class BoxCommander : Commander, ICommander, IInteractable {
       return commands;
     }
   }
+
 
   private void LoadCommands () {
     commands.AddList(interactions);

@@ -57,7 +57,7 @@ public class CharacterCommander : Commander, ICommander {
 
     // Add randomizable commands to list
     this.commands.Add(characterCommandsIndex, this.GoToRandomLocation);
-    this.commands.Add(characterCommandsIndex, this.Interaction);
+    // this.commands.Add(characterCommandsIndex, this.Interaction);
     this.commands.Add(characterCommandsIndex, this.Stare);
 
     // this.commands.Add(new Greet(this.controller));
@@ -74,6 +74,7 @@ public class CharacterCommander : Commander, ICommander {
   }
   public ICommand RandomCommand {
     get {
+      this.UpdateInteractions();
       return this.commands.RandomItem();
     }
   }

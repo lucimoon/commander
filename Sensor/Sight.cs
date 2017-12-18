@@ -26,18 +26,14 @@ public class Sight {
     IInteractable interactableObject = otherObject.GetComponent<IInteractable>();
     if (interactableObject == null) return;
 
-    bool visible = IsVisible(interactableObject);
+    bool visible = IsVisible(otherObject);
 
-    if (sensedCommands.Contains(interactableObject.InteractionCommand)) {
-      if (!visible) {
-        Unsense(interactableObject, otherObject);
-      }
-    }
+    if (!visible) Unsense(interactableObject, otherObject);
 
     if (visible) {
-      if (!sensedCommands.Contains(interactableObject.InteractionCommand)) {
-        sensedCommands.Add(interactableObject.InteractionCommand);
+      if (!sensedCommands.Contains(otherObject)) {
         sensedObjects.Add(otherObject);
+        sensedCommands.Add(interactableObject.InteractionCommand);
       }
     }
   }
@@ -49,10 +45,13 @@ public class Sight {
 
   public void Unsense (IInteractable interactableObject, GameObject otherObject) {
     if (sensedCommands.Contains(interactableObject.InteractionCommand)) {
-      sensedCommands.Remove(interactableObject.InteractionCommand);
-      sensedCommands.TrimExcess();
       sensedObjects.Remove(otherObject);
       sensedObjects.TrimExcess();
     }
+
+    interactableObject.Interactions.ForEach((command) => {
+      sensedCommands.Remove(command);
+    });
+    sensedCommands.TrimExcess();
   }
 }

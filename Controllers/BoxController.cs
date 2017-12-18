@@ -2,8 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(ItemSpawner))]
-public class BoxController : MonoBehaviour {
-  ItemSpawner spawner;
+[RequireComponent(typeof(BoxCommander))]
+public class BoxController : MonoBehaviour, IPickupable {
+  public ItemSpawner spawner;
+  public bool isHeld = false;
 
   void Start() {
     spawner = GetComponent<ItemSpawner>();
@@ -23,9 +25,14 @@ public class BoxController : MonoBehaviour {
     this.ChangeColor();
   }
 
-  public void Duplicate() {
+  public void Duplicate () {
     if (spawner != null) {
       spawner.SpawnSingle();
     }
+  }
+
+  public bool IsHeld {
+    get { return isHeld; }
+    set { this.isHeld = value; }
   }
 }
