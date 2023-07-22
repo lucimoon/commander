@@ -1,6 +1,6 @@
 # Commander
 
-This is an exploration of the [command pattern](https://refactoring.guru/design-patterns/command) for use in Unity. It was written a long time ago and I've ported over the notes I left for myself. I initially built it as an approach to mapping player character behavior to different physical inputs, but the Input System released by Unity in 2019 thankfully made this obsolete even for my personal use.
+This is an exploration of the [command pattern](https://refactoring.guru/design-patterns/command) for use in Unity. It was written a long time ago and I've ported over the notes I left for myself. I initially built it as an approach to mapping player character behavior to different physical inputs, but Unity's [Input System](https://unity.com/features/input-system) released around 2019 thankfully made this obsolete even for my personal use.
 
 ## Notes
 
